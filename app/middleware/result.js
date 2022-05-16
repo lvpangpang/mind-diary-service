@@ -1,7 +1,7 @@
 module.exports = () => {
   return async function errorHandler(ctx, next) {
     try {
-      const { data, msg } = await next();
+      const { data, msg } = await next() || {};
       if (data) {
         ctx.response.body = {
           code: 200,
@@ -19,8 +19,6 @@ module.exports = () => {
         status === 500 && app.config.env === "prod"
           ? "Internal Server Error"
           : err.message;
-
-      // 仅供参考，需按自己的业务逻辑处理。
       ctx.body = { code: 500, msg: errorMsg };
       ctx.status = status;
     }
