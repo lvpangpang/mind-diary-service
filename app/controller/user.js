@@ -4,6 +4,8 @@ class UserController extends Controller {
   async login() {
     const { ctx } = this;
     const { phone, pwd } = ctx.request.body;
+    ctx.assert(phone, "手机号不能为空");
+    ctx.assert(pwd, "密码不能为空");
     const data = await ctx.service.user.login({ phone, pwd });
     return data;
   }
@@ -11,17 +13,23 @@ class UserController extends Controller {
   async getUser() {
     const { ctx } = this;
     const { id } = ctx.request.query;
-    if (!id) {
-      return "参数id为空";
-    }
+    ctx.assert(id, "id不能为空");
     const data = await ctx.service.user.getUser(id);
+    return data;
+  }
+
+  async getUserList() {
+    const { ctx } = this;
+    const data = await ctx.service.user.getUserList();
     return data;
   }
 
   async addUser() {
     const { ctx } = this;
-    console.log(ctx.request.body);
     const { name, phone, pwd } = ctx.request.body;
+    ctx.assert(name, "名称不能为空");
+    ctx.assert(phone, "手机号不能为空");
+    ctx.assert(pwd, "密码不能为空");
     const data = await ctx.service.user.addUser({ name, phone, pwd });
     return data;
   }

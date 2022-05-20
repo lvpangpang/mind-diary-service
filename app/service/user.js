@@ -1,5 +1,6 @@
 "use strict";
 const { Service } = require("egg");
+const moment = require("moment");
 
 class UserService extends Service {
   async login({ phone, pwd }) {
@@ -10,7 +11,9 @@ class UserService extends Service {
     );
     if (userInfo[0]) {
       const userId = userInfo[0]["id"];
-      const token = jwt.sign({ userId }, config.jwt.secret);
+      const token = jwt.sign({ userId }, config.jwt.secret, {
+        expiresIn: config.jwt.expiresIn,
+      });
       await mysql.query(
         `insert into user_token (user_id, token) values('${userId}', '${token}')`
       );
@@ -23,6 +26,7 @@ class UserService extends Service {
       return "当前账号暂未注册";
     }
   }
+
   async getUser(id) {
     const { app } = this;
     const { mysql } = app;
@@ -36,13 +40,24 @@ class UserService extends Service {
     }
   }
 
+  async getUserList() {
+    const { app } = this;
+    const { mysql } = app;
+    const data = await mysql.query("select * from user");
+    return {
+      data,
+    };
+  }
+
   async addUser({ name, phone, pwd }) {
     const { app } = this;
     const { mysql } = app;
     await mysql.query(
-      `insert into user (username, phone, password) values('${name}', '${phone}', '${pwd}')`
+      `insert into user (username, phone, password, create_time) values('${name}', '${phone}', '${pwd}', '${moment(
+        new Date()
+      ).format("YYYY-MM-DD HH:mm:ss")}')`
     );
-    return null;
+    return {};
   }
 }
 

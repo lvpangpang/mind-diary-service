@@ -11,7 +11,8 @@
     "egg-jwt": "^3.1.7",
     "egg-mysql": "^3.1.0",
     "egg-scripts": "^2.11.0",
-    "egg-validate": "^2.0.2"
+    "egg-validate": "^2.0.2",
+    "moment": "^2.29.3"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -26,16 +27,9 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-demo",
-    "stop": "egg-scripts stop --title=egg-server-demo",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "start": "egg-scripts start --port=3000 --daemon --title=lvfeifei",
+    "stop": "egg-scripts stop --title=lvfeifei",
+    "dev": "egg-bin dev"
   },
   "ci": {
     "version": "10"

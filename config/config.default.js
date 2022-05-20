@@ -1,14 +1,15 @@
 "use strict";
 
 module.exports = (appInfo) => {
+  const { env } = appInfo
   const config = {
     keys: appInfo.name + "_1652350446420_1606",
     mysql: {
       client: {
-        host: "127.0.0.1",
+        host: env === 'local' ? "127.0.0.1" : '81.69.174.88',
         port: "3306",
         user: "root",
-        password: "123456",
+        password: env === 'local' ? "123456": "",
         database: "lvfeifei",
       },
       app: true,
@@ -22,8 +23,9 @@ module.exports = (appInfo) => {
     },
     jwt: {
       secret: "lvfeifei",
+      expiresIn: 60 * 60 * 24
     },
-    publicRoutes: ["/", "/user/login", "/user/addUser"],
+    publicRoutes: ["/", "/user/login", "/user/addUser", "/user/getUserList", "/wxUser/login"],
   };
   return config;
 };

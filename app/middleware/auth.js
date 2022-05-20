@@ -7,33 +7,25 @@ module.exports = (options, app) => {
       await next();
     } else {
       // 获取请求token
-      const token = ctx.request.headers.token || "";
-      if (token) {
+      const token = ctx.request.headers.token;
+      try {
         const jwtInfo = await app.jwt.verify(token, app.config.jwt.secret);
         ctx.state.userId = jwtInfo.userId;
         const userTokenInfo = await app.mysql.query(
-          `select * from user_token where user_id=${ctx.state.userId}`
+          `select * from wx_user_token where user_id='${ctx.state.userId}' and token='${token}'`
         );
         if (userTokenInfo[0]) {
-          const userToken = userTokenInfo[0].token;
-          if (userToken !== token) {
-            ctx.response.body = {
-              code: 401,
-              msg: "登录信息失效",
-            };
-          } else {
-            await next();
-          }
+          await next();
         } else {
           ctx.response.body = {
             code: 401,
             msg: "登录信息失效",
           };
         }
-      } else {
+      } catch {
         ctx.response.body = {
           code: 401,
-          msg: "登录失败",
+          msg: "未登录",
         };
       }
     }
