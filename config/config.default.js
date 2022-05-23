@@ -25,7 +25,7 @@ module.exports = (appInfo) => {
       secret: "lvfeifei",
       expiresIn: 60 * 60 * 24
     },
-    publicRoutes: ["/", "/user/login", "/user/addUser", "/user/getUserList", "/wxUser/login"],
+    publicRoutes: ["/", "/login", "/user/addUser", "/user/getUserList", ],
   };
   return config;
 };

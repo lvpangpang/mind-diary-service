@@ -3,34 +3,43 @@ const { Service } = require("egg");
 const moment = require("moment");
 
 class UserService extends Service {
-  async login({ phone, pwd }) {
+  async login({ userId, nickName, avatarUrl }) {
     const { app } = this;
     const { mysql, jwt, config } = app;
-    const userInfo = await mysql.query(
-      `select * from user where phone=${phone} and password=${pwd}`
+    const token = jwt.sign({ userId: userId }, config.jwt.secret, {
+      expiresIn: config.jwt.expiresIn,
+    });
+    await mysql.query(
+      `insert into user_token (user_id, token, create_time) values('${userId}', '${token}', '${moment(
+        new Date()
+      ).format("YYYY-MM-DD HH:mm:ss")}')`
     );
-    if (userInfo[0]) {
-      const userId = userInfo[0]["id"];
-      const token = jwt.sign({ userId }, config.jwt.secret, {
-        expiresIn: config.jwt.expiresIn,
-      });
+
+    // 当前用户不存在，帮他注册
+    const result = await mysql.query(
+      `select * from user where user_id='${userId}'`
+    );
+    if (!result[0]) {
       await mysql.query(
-        `insert into user_token (user_id, token) values('${userId}', '${token}')`
+        `insert into user (user_id, username, avatar_url, create_time) values('${userId}', '${nickName}', '${avatarUrl}', '${moment(
+          new Date()
+        ).format("YYYY-MM-DD HH:mm:ss")}')`
       );
-      return {
-        data: {
-          token,
-        },
-      };
-    } else {
-      return "当前账号暂未注册";
     }
+    
+    return {
+      data: {
+        token,
+      },
+    };
   }
 
-  async getUser(id) {
+  async getUser(token) {
     const { app } = this;
     const { mysql } = app;
-    const user = await mysql.query("select * from user where id = " + id);
+    const user = await mysql.query(
+      `select user_id from wx_user_token where token='${token}'`
+    );
     if (user[0]) {
       return {
         data: user[0],
@@ -38,26 +47,6 @@ class UserService extends Service {
     } else {
       return "查询用户信息失败";
     }
-  }
-
-  async getUserList() {
-    const { app } = this;
-    const { mysql } = app;
-    const data = await mysql.query("select * from user");
-    return {
-      data,
-    };
-  }
-
-  async addUser({ name, phone, pwd }) {
-    const { app } = this;
-    const { mysql } = app;
-    await mysql.query(
-      `insert into user (username, phone, password, create_time) values('${name}', '${phone}', '${pwd}', '${moment(
-        new Date()
-      ).format("YYYY-MM-DD HH:mm:ss")}')`
-    );
-    return {};
   }
 }
 

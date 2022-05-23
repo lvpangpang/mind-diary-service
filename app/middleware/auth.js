@@ -12,7 +12,7 @@ module.exports = (options, app) => {
         const jwtInfo = await app.jwt.verify(token, app.config.jwt.secret);
         ctx.state.userId = jwtInfo.userId;
         const userTokenInfo = await app.mysql.query(
-          `select * from wx_user_token where user_id='${ctx.state.userId}' and token='${token}'`
+          `select * from user_token where user_id='${ctx.state.userId}' and token='${token}'`
         );
         if (userTokenInfo[0]) {
           await next();
