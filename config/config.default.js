@@ -25,6 +25,9 @@ module.exports = (appInfo) => {
       secret: "lvfeifei",
       expiresIn: 60 * 60 * 24
     },
+    bodyParser: {
+      jsonLimit: "1000mb"
+    },
     publicRoutes: ["/", "/login", "/user/addUser", "/user/getUserList", ],
   };
   return config;

@@ -34,11 +34,11 @@ class UserService extends Service {
     };
   }
 
-  async getUser(token) {
+  async getUser(userId) {
     const { app } = this;
     const { mysql } = app;
     const user = await mysql.query(
-      `select user_id from wx_user_token where token='${token}'`
+      `select * from user where user_id='${userId}'`
     );
     if (user[0]) {
       return {

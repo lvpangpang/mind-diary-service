@@ -33,9 +33,8 @@ class UserController extends Controller {
 
   async getUser() {
     const { ctx } = this;
-    const token = ctx.request.headers.token;
-    ctx.assert(token, "token不能为空");
-    const data = await ctx.service.user.getUser(token);
+    const userId = ctx.state.userId;
+    const data = await ctx.service.user.getUser(userId);
     return data;
   }
 }
