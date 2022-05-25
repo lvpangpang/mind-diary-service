@@ -7,4 +7,7 @@ module.exports = (app) => {
 
   router.get("/diary/get", controller.diary.get);
   router.post("/diary/add", controller.diary.add);
+
+  router.post("/upload", controller.upload.upload);
+
 };

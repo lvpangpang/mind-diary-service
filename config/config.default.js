@@ -1,15 +1,16 @@
 "use strict";
+const path = require('path');
 
 module.exports = (appInfo) => {
-  const { env } = appInfo
+  const { env } = appInfo;
   const config = {
     keys: appInfo.name + "_1652350446420_1606",
     mysql: {
       client: {
-        host: env === 'local' ? "127.0.0.1" : '81.69.174.88',
+        host: env === "local" ? "127.0.0.1" : "81.69.174.88",
         port: "3306",
         user: "root",
-        password: env === 'local' ? "123456": "",
+        password: env === "local" ? "123456" : "",
         database: "lvfeifei",
       },
       app: true,
@@ -23,12 +24,26 @@ module.exports = (appInfo) => {
     },
     jwt: {
       secret: "lvfeifei",
-      expiresIn: 60 * 60 * 24
+      expiresIn: 60 * 60 * 24 * 365,
     },
     bodyParser: {
-      jsonLimit: "1000mb"
+      jsonLimit: "1000mb",
     },
-    publicRoutes: ["/", "/login", "/user/addUser", "/user/getUserList", ],
+    multipart: {
+      mode: "file",
+      tmpdir: path.join(__dirname, '../app/public/tmp', appInfo.name),
+      // 表单 Field 文件名长度限制
+      fieldNameSize: 100,
+      // 表单 Field 内容大小
+      fieldSize: "100kb",
+      // 表单 Field 最大个数
+      fields: 10,
+      // 单个文件大小
+      fileSize: "10mb",
+      // 允许上传的最大文件数
+      files: 10,
+    },
+    publicRoutes: ["/", "/login", "/user/addUser", "/user/getUserList", "/upload"],
   };
   return config;
 };
