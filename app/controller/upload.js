@@ -6,22 +6,29 @@ class UploadController extends Controller {
     const { ctx, app } = this;
     const { env } = app;
 
-    const domain =
-      env === "local"
-        ? "http://10.16.20.9:3000/"
-        : "https://www.lvpangpang.com/";
+    try {
+      const domain =
+        env === "local"
+          ? "http://10.16.20.9:3000/"
+          : "https://www.lvpangpang.com/api/";
 
-    const result = [];
-    for (const file of ctx.request.files) {
-      const filePath = file.filepath;
-      result.push({
-        url: domain +
-          filePath.substring(filePath.indexOf("public")).replace(/\\/g, "/"),
-      });
+      const result = [];
+      for (const file of ctx.request.files) {
+        const filePath = file.filepath;
+        result.push({
+          url:
+            domain +
+            filePath.substring(filePath.indexOf("public")).replace(/\\/g, "/"),
+        });
+      }
+      return {
+        data: result,
+      };
+    } catch (err) {
+      return {
+        data: err,
+      };
     }
-    return {
-      data: result,
-    };
   }
 }
 
