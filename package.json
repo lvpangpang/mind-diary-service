@@ -29,7 +29,7 @@
   "scripts": {
     "start": "egg-scripts start --port=3000 --daemon --title=lvfeifei",
     "stop": "egg-scripts stop --title=lvfeifei",
-    "dev": "egg-bin dev"
+    "dev": "egg-bin dev --port=3000"
   },
   "ci": {
     "version": "10"

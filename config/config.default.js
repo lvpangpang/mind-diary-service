@@ -10,7 +10,7 @@ module.exports = (appInfo) => {
         host: env === "local" ? "127.0.0.1" : "81.69.174.88",
         port: "3306",
         user: "root",
-        password: env === "local" ? "123456" : "",
+        password: "123456",
         database: "lvfeifei",
       },
       app: true,
