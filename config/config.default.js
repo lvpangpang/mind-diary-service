@@ -43,7 +43,7 @@ module.exports = (appInfo) => {
       // 允许上传的最大文件数
       files: 10,
     },
-    publicRoutes: ["/", "/login", "/user/addUser", "/user/getUserList", "/upload"],
+    publicRoutes: ["/", "/login", "/upload"],
   };
   return config;
 };
