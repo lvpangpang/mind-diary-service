@@ -11,6 +11,16 @@ class CommunityController extends Controller {
     return data;
   }
 
+  async getOne() {
+    const { ctx } = this;
+    const { id } = ctx.request.query;
+    ctx.assert(id, "id不能为空");
+    const data = await ctx.service.community.getOne({
+      id
+    });
+    return data;
+  }
+
   async add() {
     const { ctx } = this;
     const { content } = ctx.request.body;
