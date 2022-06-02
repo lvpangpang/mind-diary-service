@@ -12,6 +12,7 @@ module.exports = (app) => {
   router.get("/community/getOne", controller.community.getOne);
   router.post("/community/add", controller.community.add);
 
+  router.get("/comment/get", controller.comment.get);
   router.post("/comment/add", controller.comment.add);
 
 

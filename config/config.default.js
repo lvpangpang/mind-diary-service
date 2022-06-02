@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = (appInfo) => {
   const { env } = appInfo;
+  console.log(appInfo)
   const config = {
     keys: appInfo.name + "_1652350446420_1606",
     mysql: {
@@ -31,7 +32,7 @@ module.exports = (appInfo) => {
     },
     multipart: {
       mode: "file",
-      tmpdir: path.join(__dirname, '../app/public/tmp', appInfo.name),
+      tmpdir: path.join(__dirname, '../app/public/'),
       // 表单 Field 文件名长度限制
       fieldNameSize: 100,
       // 表单 Field 内容大小
@@ -43,7 +44,7 @@ module.exports = (appInfo) => {
       // 允许上传的最大文件数
       files: 10,
     },
-    publicRoutes: ["/", "/login", "/upload"],
+    publicRoutes: ["/", "/login", "/upload", '/community/get', '/community/getOne', '/comment/get'],
   };
   return config;
 };

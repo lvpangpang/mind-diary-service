@@ -4,10 +4,8 @@ const { Controller } = require("egg");
 class CommentController extends Controller {
   async get() {
     const { ctx } = this;
-    const { pageIndex } = ctx.request.body;
-    const data = await ctx.service.community.get({
-      pageIndex
-    });
+    const { id } = ctx.request.query;
+    const data = await ctx.service.comment.get(id);
     return data;
   }
 

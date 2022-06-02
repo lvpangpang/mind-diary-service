@@ -3,16 +3,12 @@ const { Service } = require("egg");
 const moment = require("moment");
 
 class CommentService extends Service {
-  async get({ pageIndex = 1 }) {
+  async get(id) {
     const { app } = this;
     const { mysql } = app;
-    const pageSize = 1000;
     const data = await mysql.query(
-      `select community.id, community.content, community.create_time, user.username, user.avatar_url from community join user on user.user_id=community.user_id order by community.create_time DESC  limit ${
-        (pageIndex - 1) * pageSize
-      }, ${pageSize}`
+      `select comment.id, comment.content, comment.reply_name, comment.create_time, comment.create_time, user.user_id, user.username from comment join user on user.user_id=comment.user_id where comment.community_id='${id}' order by comment.create_time ASC`
     );
-    const total = await mysql.query(`select count(*) from community`);
 
     data.forEach((item) => {
       item["create_time"] = moment(item["create_time"]).format(
@@ -21,19 +17,22 @@ class CommentService extends Service {
     });
 
     return {
-      data: {
-        list: data,
-        total: total[0]["count(*)"],
-        pageIndex,
-      },
+      data,
     };
   }
 
   async add({ userId, content, id, replyId }) {
     const { app } = this;
     const { mysql } = app;
+    let replyName = "";
+    if (replyId) {
+      const data = await mysql.query(
+        `select username from user where user_id='${replyId}'`
+      );
+      replyName = data[0]["username"];
+    }
     await mysql.query(
-      `insert into comment (community_id, user_id, reply_id, content, create_time) values('${id}', '${userId}', '${replyId}', '${content}', '${moment(
+      `insert into comment (community_id, user_id, reply_id, reply_name, content, create_time) values('${id}', '${userId}', '${replyId}', '${replyName}', '${content}', '${moment(
         new Date()
       ).format("YYYY-MM-DD HH:mm:ss")}')`
     );
