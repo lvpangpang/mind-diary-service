@@ -3,7 +3,6 @@ const path = require('path');
 
 module.exports = (appInfo) => {
   const { env } = appInfo;
-  console.log(appInfo)
   const config = {
     keys: appInfo.name + "_1652350446420_1606",
     mysql: {
