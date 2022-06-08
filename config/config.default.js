@@ -26,6 +26,9 @@ module.exports = (appInfo) => {
       secret: "lvfeifei",
       expiresIn: 60 * 60 * 24 * 365,
     },
+    cors: {
+      origin: '*',
+    },
     bodyParser: {
       jsonLimit: "1000mb",
     },
