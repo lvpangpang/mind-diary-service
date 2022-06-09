@@ -34,7 +34,7 @@ module.exports = (appInfo) => {
     },
     multipart: {
       mode: "file",
-      tmpdir: path.join(__dirname, '../app/public/'),
+      tmpdir: path.join(__dirname, '../tmp/'),
       // 表单 Field 文件名长度限制
       fieldNameSize: 100,
       // 表单 Field 内容大小
@@ -45,6 +45,15 @@ module.exports = (appInfo) => {
       fileSize: "10mb",
       // 允许上传的最大文件数
       files: 10,
+    },
+    // socket 配置
+    io: {
+      namespace: {
+        '/io' : {
+          connectionMiddleware: ['auth'],
+          packetMiddleware: [],
+        }
+      },
     },
     publicRoutes: ["/", "/login", "/upload", '/community/get', '/community/getOne', '/comment/get'],
   };
