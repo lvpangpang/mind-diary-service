@@ -3,10 +3,9 @@ const { Service } = require("egg");
 const moment = require("moment");
 
 class CommunityService extends Service {
-  async get({ pageIndex = 1 }) {
+  async get({ pageIndex, pageSize}) {
     const { app } = this;
     const { mysql } = app;
-    const pageSize = 1000;
     const data = await mysql.query(
       `select community.id, community.content, community.create_time, user.username, user.avatar_url from community join user on user.user_id=community.user_id order by community.create_time DESC  limit ${
         (pageIndex - 1) * pageSize
@@ -23,8 +22,7 @@ class CommunityService extends Service {
     return {
       data: {
         list: data,
-        total: total[0]["count(*)"],
-        pageIndex,
+        total: total[0]["count(*)"]
       },
     };
   }

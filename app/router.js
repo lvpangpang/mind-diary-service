@@ -5,8 +5,8 @@ module.exports = (app) => {
   router.post("/login", controller.user.login);
   router.get("/user/getUser", controller.user.getUser);
 
-  router.get("/diary/get", controller.diary.get);
-  router.post("/diary/add", controller.diary.add);
+  // router.get("/diary/get", controller.diary.get);
+  // router.post("/diary/add", controller.diary.add);
 
   router.get("/community/get", controller.community.get);
   router.get("/community/getOne", controller.community.getOne);

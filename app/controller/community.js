@@ -4,9 +4,10 @@ const { Controller } = require("egg");
 class CommunityController extends Controller {
   async get() {
     const { ctx } = this;
-    const { pageIndex } = ctx.request.body;
+    const { pageIndex = 1, pageSize = 10 } = ctx.request.query;
     const data = await ctx.service.community.get({
-      pageIndex
+      pageIndex,
+      pageSize,
     });
     return data;
   }
@@ -16,7 +17,7 @@ class CommunityController extends Controller {
     const { id } = ctx.request.query;
     ctx.assert(id, "id不能为空");
     const data = await ctx.service.community.getOne({
-      id
+      id,
     });
     return data;
   }
