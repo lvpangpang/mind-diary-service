@@ -26,6 +26,10 @@ class CommunityController extends Controller {
     const { ctx } = this;
     const { content } = ctx.request.body;
     const userId = ctx.state.userId;
+    // 只允许吕肥肥发帖
+    if (userId !== "of_rs5J06mkPuhFfH7_QXV_5UsmM") {
+      return "目前只支持吕肥肥发帖";
+    }
     ctx.assert(content, "content不能为空");
     const data = await ctx.service.community.add({ userId, content });
     return data;

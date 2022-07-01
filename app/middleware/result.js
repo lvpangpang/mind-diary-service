@@ -5,7 +5,7 @@ module.exports = () => {
       if (result) {
         if (typeof result === "string") {
           ctx.response.body = {
-            code: 400,
+            code: 500,
             msg: result,
           };
         } else {
